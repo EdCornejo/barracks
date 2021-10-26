@@ -1,14 +1,11 @@
 
 from rest_framework import filters, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
-
 
 from user.serializers import UserLoginSerializer, UserRegisterSerializer, UserSerializer
 from user.models import User
@@ -18,7 +15,7 @@ from user.models import User
 class UserViewSet(ModelViewSet):
     http_method_names = ['get']
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     filter_backends = [filters.OrderingFilter]
 
 
