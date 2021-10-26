@@ -19,6 +19,22 @@ class UserManager(BaseUserManager):
         return user
 
 
+    def create_superuser(self, username, email, password):
+        if password is None:
+            raise TypeError('Password is required')
+        if username is None:
+            raise TypeError('Username is required')
+        if email is None:
+            raise TypeError('Email is required')
+
+        user = self.create_user(username, email, password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+
+        return user
+
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(db_index=True, max_length=255, unique=True)
