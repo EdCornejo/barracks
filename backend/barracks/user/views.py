@@ -1,17 +1,21 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework import filters
 
-from user.serializers import UserSerializer
+from rest_framework import filters, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+from user.serializers import RegisterSerializer, UserSerializer
 from user.models import User
 
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(ModelViewSet):
     http_method_names = ['get']
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
-    # permission_classes = [AllowAny]
     filter_backends = [filters.OrderingFilter]
 
 
@@ -25,3 +29,23 @@ class UserViewSet(viewsets.ModelViewSet):
         obj = User.objects.get(lookup_field_value)
         self.check_object_permissions(self.request, obj)
         return obj
+
+
+
+class UserRegisterViewSet(ModelViewSet, TokenObtainPairView):
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+    http_method_names = ['post']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "user": serializer.data,
+            "refresh": str(refresh),
+            "token": str(refresh.access_token)
+        }, status=status.HTTP_201_CREATED)
