@@ -3,11 +3,14 @@ from rest_framework import filters, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from user.serializers import RegisterSerializer, UserSerializer
+
+
+from user.serializers import UserLoginSerializer, UserRegisterSerializer, UserSerializer
 from user.models import User
 
 
@@ -31,9 +34,8 @@ class UserViewSet(ModelViewSet):
         return obj
 
 
-
 class UserRegisterViewSet(ModelViewSet, TokenObtainPairView):
-    serializer_class = RegisterSerializer
+    serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]
     http_method_names = ['post']
 
@@ -49,3 +51,19 @@ class UserRegisterViewSet(ModelViewSet, TokenObtainPairView):
             "refresh": str(refresh),
             "token": str(refresh.access_token)
         }, status=status.HTTP_201_CREATED)
+
+
+class UserLoginViewSet(ModelViewSet, TokenObtainPairView):
+    serializer_class = UserLoginSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['post']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e)
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)

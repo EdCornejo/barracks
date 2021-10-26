@@ -23,3 +23,13 @@ curl --location --request POST 'http://localhost:8000/api/user/register/' \
     "username": "demo"
 }'
 ```
+
+## Login user
+```
+curl --location --request POST 'http://localhost:8000/api/user/login/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "demo",
+    "password": "1234"
+}'
+```

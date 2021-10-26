@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class RegisterSerializer(UserSerializer):
+class UserRegisterSerializer(UserSerializer):
     email = serializers.EmailField(required=True, write_only=True, max_length=100)
     password = serializers.CharField(max_length=100, min_length=4, write_only=True, required=True)
 
@@ -31,3 +31,17 @@ class RegisterSerializer(UserSerializer):
         except ObjectDoesNotExist:
             user = User.objects.create_user(**validated_data)
         return user
+
+
+
+class UserLoginSerializer(TokenObtainPairSerializer):
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+
+        data['user'] = UserSerializer(self.user).data
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        return data
