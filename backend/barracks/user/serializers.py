@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserRegisterSerializer(UserSerializer):
+    username = serializers.CharField(required=True, write_only=True, max_length=100)
     email = serializers.EmailField(required=True, write_only=True, max_length=100)
     password = serializers.CharField(max_length=100, min_length=4, write_only=True, required=True)
 
@@ -29,15 +30,17 @@ class UserRegisterSerializer(UserSerializer):
 
     def create(self, validated_data):
         try:
-            user = User.objects.get(email=validated_data['email'])
-        except ObjectDoesNotExist:
             user = User.objects.create_user(**validated_data)
             request = self.context.get('request')
             user.is_mobile_user = is_using_mobile(request)
             user.save()
-
-        return user
-
+            return user
+        except Exception as e:
+            try:
+                User.objects.get(username=validated_data['username'])
+                raise serializers.ValidationError({'error': 'Username already exists'})
+            except ObjectDoesNotExist:
+                raise serializers.ValidationError({'error': 'Email already exists'})
 
 
 class UserLoginSerializer(TokenObtainPairSerializer):
