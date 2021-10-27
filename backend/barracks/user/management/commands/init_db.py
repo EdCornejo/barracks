@@ -7,4 +7,4 @@ class Command(BaseCommand):
     help = 'Init db'
 
     def handle(self, *args, **kwargs):
-        User.objects.create_user(username='admin', email='admin@ejemplo.poc', password='admin123')
+        User.objects.create_superuser(username='admin', email='admin@ejemplo.poc', password='admin123')

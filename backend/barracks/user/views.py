@@ -52,7 +52,7 @@ class UserRegisterViewSet(ModelViewSet, TokenObtainPairView):
 
 class UserLoginViewSet(ModelViewSet, TokenObtainPairView):
     serializer_class = UserLoginSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
