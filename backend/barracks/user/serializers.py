@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -5,7 +6,6 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from user.models import User
-
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,12 +36,20 @@ class UserRegisterSerializer(UserSerializer):
 
 class UserLoginSerializer(TokenObtainPairSerializer):
 
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        update_last_login(None, user)
+
+        token['user'] = UserSerializer(user).data
+        token['timestamp'] = str(timezone.now().timestamp())
+        token['is_superuser'] = user.is_superuser
+        return token
+
     def validate(self, attrs):
         data = super().validate(attrs)
-        refresh = self.get_token(self.user)
-
-        data['user'] = UserSerializer(self.user).data
+        refresh = UserLoginSerializer.get_token(self.user)
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
-
         return data
