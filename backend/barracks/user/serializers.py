@@ -1,5 +1,3 @@
-import re
-
 from django.utils import timezone
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,6 +6,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from user.models import User
+from user.utils import is_using_mobile
 
 
 
@@ -34,17 +33,7 @@ class UserRegisterSerializer(UserSerializer):
         except ObjectDoesNotExist:
             user = User.objects.create_user(**validated_data)
             request = self.context.get('request')
-
-            user_agent = request.META['HTTP_USER_AGENT']
-
-            is_mobile_user = False
-
-            mobile_agent_regex = re.compile(r'.*(iphone|mobile|androidtouch)',re.IGNORECASE)
-
-            if mobile_agent_regex.match(user_agent):
-                is_mobile_user = True
-
-            user.is_mobile_user = is_mobile_user
+            user.is_mobile_user = is_using_mobile(request)
             user.save()
 
         return user
@@ -74,16 +63,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         del data['refresh']
 
         request = self.context.get('request')
-        user_agent = request.META['HTTP_USER_AGENT']
-
-        is_mobile_user = False
-
-        mobile_agent_regex = re.compile(r'.*(iphone|mobile|androidtouch)',re.IGNORECASE)
-
-        if mobile_agent_regex.match(user_agent):
-            is_mobile_user = True
-
-        self.user.is_mobile_user = is_mobile_user
+        self.user.is_mobile_user = is_using_mobile(request)
         self.user.save()
 
         return data
