@@ -1,3 +1,5 @@
+import re
+
 from django.utils import timezone
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,6 +8,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from user.models import User
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,12 +59,13 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
 
         request = self.context.get('request')
-        keywords = ['Mobile','Opera Mini','Android']
         user_agent = request.META['HTTP_USER_AGENT']
 
         is_mobile_user = False
 
-        if any(word in user_agent for word in keywords):
+        mobile_agent_regex = re.compile(r'.*(iphone|mobile|androidtouch)',re.IGNORECASE)
+
+        if mobile_agent_regex.match(user_agent):
             is_mobile_user = True
 
         self.user.is_mobile_user = is_mobile_user
