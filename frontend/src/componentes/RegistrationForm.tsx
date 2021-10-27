@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { registerService } from "../helpers/auth";
 
 
 export const RegistrationForm = () => {
@@ -23,8 +24,14 @@ export const RegistrationForm = () => {
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, username, password);
-
+    registerService(email, username, password)
+    .then(
+      data => {
+        console.log(data)
+      }
+    ).catch((error:Error) => {
+      console.log(error)
+    });
   };
 
 
