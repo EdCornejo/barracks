@@ -45,7 +45,7 @@ class UserRegisterViewSet(ModelViewSet, TokenObtainPairView):
 
         return Response({
             "user": serializer.data,
-            "refresh": str(refresh),
+            # "refresh": str(refresh),
             "token": str(refresh.access_token)
         }, status=status.HTTP_201_CREATED)
 

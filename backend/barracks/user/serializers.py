@@ -26,13 +26,27 @@ class UserRegisterSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'is_active']
+        fields = ['id', 'username', 'email', 'password', 'is_active', 'is_staff', 'is_mobile_user']
 
     def create(self, validated_data):
         try:
             user = User.objects.get(email=validated_data['email'])
         except ObjectDoesNotExist:
             user = User.objects.create_user(**validated_data)
+            request = self.context.get('request')
+
+            user_agent = request.META['HTTP_USER_AGENT']
+
+            is_mobile_user = False
+
+            mobile_agent_regex = re.compile(r'.*(iphone|mobile|androidtouch)',re.IGNORECASE)
+
+            if mobile_agent_regex.match(user_agent):
+                is_mobile_user = True
+
+            user.is_mobile_user = is_mobile_user
+            user.save()
+
         return user
 
 
@@ -55,8 +69,9 @@ class UserLoginSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         refresh = UserLoginSerializer.get_token(self.user)
-        data['refresh'] = str(refresh)
+        # data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
+        del data['refresh']
 
         request = self.context.get('request')
         user_agent = request.META['HTTP_USER_AGENT']
