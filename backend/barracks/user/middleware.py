@@ -24,17 +24,26 @@ class OneSessionPerUserMiddleware:
         return response
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        response = authentication.JWTAuthentication().authenticate(request)
-        if response is not None:
-            user, token = response
-            timestamp = float(token.payload.get('timestamp'))
-            last_login = float(str(user.last_login.timestamp()))
+        try:
+            response = authentication.JWTAuthentication().authenticate(request)
+            if response is not None:
+                user, token = response
+                timestamp = float(token.payload.get('timestamp'))
+                last_login = float(str(user.last_login.timestamp()))
 
-            if timestamp < last_login:
-                response = Response(
-                    data={'detail': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED
-                )
-                response.accepted_renderer = JSONRenderer()
-                response.accepted_media_type = "application/json"
-                response.renderer_context = {}
-                return response
+                if timestamp < last_login:
+                    response = Response(
+                        data={'error': 'Unauthorized token'}, status=status.HTTP_401_UNAUTHORIZED
+                    )
+                    response.accepted_renderer = JSONRenderer()
+                    response.accepted_media_type = "application/json"
+                    response.renderer_context = {}
+                    return response
+        except:
+            response = Response(
+                data={'error': 'Expired token'}, status=status.HTTP_401_UNAUTHORIZED
+            )
+            response.accepted_renderer = JSONRenderer()
+            response.accepted_media_type = "application/json"
+            response.renderer_context = {}
+            return response
