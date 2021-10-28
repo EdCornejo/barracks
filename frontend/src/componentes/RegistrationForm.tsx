@@ -24,14 +24,19 @@ export const RegistrationForm = () => {
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    registerService(email, username, password)
-    .then(
-      data => {
-        console.log(data)
-      }
-    ).catch((error:Error) => {
-      console.log(error)
-    });
+    if (email.trim().length > 1 && username.trim().length > 1 && password.trim().length > 1 ) {
+      registerService(email, username, password)
+      .then(
+        data => {
+          console.log(data)
+        }
+      ).catch((error:Error) => {
+        console.log(error)
+      });
+    } else {
+      console.log("Datos invalidos");
+    }
+
   };
 
 

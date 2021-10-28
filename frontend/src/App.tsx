@@ -5,7 +5,7 @@ import RegistrationForm from './componentes/RegistrationForm';
 
 function App() {
   return (
-    <RegistrationForm />
+    <LoginForm />
   );
 }
 

@@ -62,6 +62,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         refresh = UserLoginSerializer.get_token(self.user)
         # data['refresh'] = str(refresh)
+        data['user'] = UserSerializer(self.user).data
         data['access'] = str(refresh.access_token)
         del data['refresh']
 
