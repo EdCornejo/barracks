@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { loginService } from "../helpers/auth";
+import { getMovie, getMovies } from "../helpers/movies";
 
 
 export const LoginForm = () => {
@@ -19,8 +20,20 @@ export const LoginForm = () => {
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email.trim().length > 1 && password.trim().length > 1 ) {
-      loginService(email, password)
+      // if (email.trim().length > 1 && password.trim().length > 1 ) {
+      //   loginService(email, password)
+      //   .then(
+      //     data => {
+      //       console.log(data)
+      //     }
+      //   ).catch((error:Error) => {
+      //     console.log(error)
+      //   });
+      // } else {
+      //   console.log("Datos invalidos");
+      // }
+
+    getMovie(1)
       .then(
         data => {
           console.log(data)
@@ -28,9 +41,6 @@ export const LoginForm = () => {
       ).catch((error:Error) => {
         console.log(error)
       });
-    } else {
-      console.log("Datos invalidos");
-    }
 
   };
 
