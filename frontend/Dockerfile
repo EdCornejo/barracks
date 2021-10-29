@@ -6,7 +6,7 @@ COPY ./public ./public
 
 COPY ./src ./src
 
-COPY tsconfig.json ./
+# COPY tsconfig.json ./
 
 COPY package.json ./
 
