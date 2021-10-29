@@ -12,9 +12,12 @@ COPY package.json ./
 
 # COPY yarn.lock ./
 
+RUN yarn global add serve
+RUN yarn global add react-scripts
+RUN yarn global add typescript
+
 RUN yarn install
 
 # RUN yarn build
 
-RUN yarn global add serve
-RUN yarn global add react-scripts
+
