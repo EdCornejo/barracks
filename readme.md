@@ -54,7 +54,9 @@ curl --location --request GET 'http://localhost:4000/api/user/' \
 
 ## Install
 ```
-docker-compose -f docker-compose.yml up -d --build
+sudo docker-compose -f docker-compose.yml up -d --build
+docker-compose -f docker-compose.yml down --build
+docker-compose -f docker-compose.yml up --build
 ```
 _NOTA: Esperar 3 minutos hasta que el front se compile y despliegue_
 
