@@ -51,3 +51,12 @@ curl --location --request GET 'http://localhost:8000/api/user/' \
 --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM1Mjc2MTQ1LCJqdGkiOiIxOGRjZmVhMDQ1MzY0MWI3YWU5ZjUxOGIzMWE3Y2MyMSIsInVzZXJfaWQiOjF9.YXlctyHy4q-y1Fwkyme-6FtRnDq-BNkulZU2wQ8BZMA'
 
 ```
+
+
+```
+docker-compose -f docker-compose.yml up -d --build
+```
+
+docker-compose up
+
+docker-compose up -d --build

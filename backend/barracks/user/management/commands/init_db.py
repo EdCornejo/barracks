@@ -15,7 +15,7 @@ class Command(BaseCommand):
         Movie.objects.all().delete()
         Movie.objects.create(
             title='Avengers: Infinity War',
-            description='As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.',
+            description='As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos.',
             poster_path='https://themoviedb.org/t/p/w440_and_h660_face/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg',
             vote_average=8.3,
             vote_count=6937,
@@ -31,7 +31,7 @@ class Command(BaseCommand):
         )
         Movie.objects.create(
             title='Upgrade',
-            description='A brutal mugging leaves Grey Trace paralyzed in the hospital and his beloved wife dead. A billionaire inventor soon offers Trace a cure — an artificial intelligence implant called STEM that will enhance his body. Now able to walk, Grey finds that he also has superhuman strength and agility — skills he uses to seek revenge against the thugs who destroyed his life.',
+            description='A brutal mugging leaves Grey Trace paralyzed in the hospital and his beloved wife dead. A billionaire inventor soon offers Trace a cure — an artificial intelligence implant called STEM that will enhance his body.',
             poster_path='https://themoviedb.org/t/p/w440_and_h660_face/adOzdWS35KAo21r9R4BuFCkLer6.jpg',
             vote_average=7.6,
             vote_count=138,
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         )
         Movie.objects.create(
             title='Tag',
-            description='For one month every year, five highly competitive friends hit the ground running in a no-holds-barred game of tag they’ve been playing since the first grade. This year, the game coincides with the wedding of their only undefeated player, which should finally make him an easy target. But he knows they’re coming...and he’s ready.',
+            description='For one month every year, five highly competitive friends hit the ground running in a no-holds-barred game of tag they’ve been playing since the first grade.',
             poster_path='https://themoviedb.org/t/p/w440_and_h660_face/eXXpuW2xaq5Aen9N5prFlARVIvr.jpg',
             vote_average=7,
             vote_count=285,
