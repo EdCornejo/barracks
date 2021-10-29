@@ -10,14 +10,12 @@ COPY tsconfig.json ./
 
 COPY package.json ./
 
-# COPY yarn.lock ./
+COPY yarn.lock ./
 
 RUN yarn global add serve
-RUN yarn global add react-scripts
-RUN yarn global add typescript
+# RUN yarn global add react-scripts
+# RUN yarn global add typescript
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # RUN yarn build
-
-

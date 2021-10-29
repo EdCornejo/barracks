@@ -1,6 +1,34 @@
 # Barracks
 
 
+## Install
+```
+docker-compose -f docker-compose.yml up --build
+```
+
+_NOTA: Esperar 5 minutos hasta que el front genere el build y despliegue_
+
+## URL Frontend
+http://localhost:5000/login
+
+
+## URL Backend
+http://localhost:4000/admin
+
+Usuario admin
+```
+admin@ejemplo.poc
+admin123
+```
+
+Usuario normal
+```
+demo@mail.poc
+demo123
+```
+
+
+
 ## Generate token
 ```
 curl --location --request POST 'http://localhost:4000/api/token/' \
@@ -50,31 +78,4 @@ Require staff user
 curl --location --request GET 'http://localhost:4000/api/user/' \
 --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM1Mjc2MTQ1LCJqdGkiOiIxOGRjZmVhMDQ1MzY0MWI3YWU5ZjUxOGIzMWE3Y2MyMSIsInVzZXJfaWQiOjF9.YXlctyHy4q-y1Fwkyme-6FtRnDq-BNkulZU2wQ8BZMA'
 
-```
-
-## Install
-```
-sudo docker-compose -f docker-compose.yml up -d --build
-docker-compose -f docker-compose.yml down --build
-docker-compose -f docker-compose.yml up --build
-```
-_NOTA: Esperar 3 minutos hasta que el front se compile y despliegue_
-
-## URL Frontend
-http://localhost:5000/login
-
-
-## URL Backend
-http://localhost:4000/admin
-
-Usuario admin
-```
-admin@ejemplo.poc
-admin123
-```
-
-Usuario normal
-```
-demo@mail.poc
-demo123
 ```
